@@ -2,7 +2,7 @@
 
 provider "aws" {
 
-  region                   = "ap-south-1"
+  region                   = "us-east-2"
   shared_credentials_files = ["/home/e1087/live-infra/.aws/credentials"]
 
 }

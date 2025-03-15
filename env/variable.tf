@@ -2,7 +2,7 @@
 
 
 variable "eks_node_group_template_instance_key_name" {
-  default = "pri_mum"
+  default = "ohio-key"
 }
 
 variable "eks_node_group_template_instance_type" {
