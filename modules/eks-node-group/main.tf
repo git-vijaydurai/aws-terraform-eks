@@ -7,8 +7,8 @@ resource "aws_eks_node_group" "node-grp" {
 
 
   scaling_config {
-    desired_size = 2
-    max_size     = 2
+    desired_size = 1
+    max_size     = 3
     min_size     = 1
   }
 
@@ -20,4 +20,10 @@ resource "aws_eks_node_group" "node-grp" {
     id      = var.eks_node_launch_template_id_in
     version = "$Latest"
   }
+  tags = {
+    "k8s.io/cluster-autoscaler/enabled"                     = "true"
+    "k8s.io/cluster-autoscaler/${var.eks_cluster_id_in}"    = "owned"
+  }
+
 }
+

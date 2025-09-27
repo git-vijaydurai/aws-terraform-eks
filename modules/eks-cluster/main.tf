@@ -17,3 +17,8 @@ data "tls_certificate" "eks_tls_certificate" {
 }
 
 
+resource "aws_eks_addon" "pod_identity_agent" {
+  cluster_name                = aws_eks_cluster.eks.name
+  addon_name                  = "eks-pod-identity-agent"
+  resolve_conflicts_on_update = "PRESERVE"
+}
