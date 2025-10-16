@@ -2,9 +2,9 @@
 
 
 variable "eks_node_group_template_instance_key_name" {
-  default = "ohio-key"
+  default = "jkey"
 }
 
 variable "eks_node_group_template_instance_type" {
-  default = "t2.medium"
+  default = "t3.small"
 }
