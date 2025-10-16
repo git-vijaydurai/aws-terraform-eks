@@ -6,3 +6,5 @@
 *.tfstate.backup
 crash.log
 env/.terraform*
+*tfplan*
+

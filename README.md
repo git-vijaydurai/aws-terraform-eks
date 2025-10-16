@@ -1,8 +1,8 @@
 # 🐝 Terraform AWS EKS Cluster Automation
 
-This repository provisions an **Amazon EKS (Elastic Kubernetes Service) cluster** along with all required AWS resources using **Terraform** and a modular design.
+This repository provisions an **Amazon EKS (Elastic Kubernetes Service) cluster** along with all required AWS resources using **Terraform** with a modular design.
 
-It includes **VPC, NAT Gateways, IAM roles, Node Groups, EKS cluster**, and **Node Group Templates**.
+It includes **VPC, NAT Gateways, IAM roles, Node Groups, Node Group Templates**, and the **EKS cluster** itself.
 
 ---
 
@@ -29,16 +29,16 @@ It includes **VPC, NAT Gateways, IAM roles, Node Groups, EKS cluster**, and **No
 
 ## ⚙️ How It Works
 
-The main Terraform file (`env/main.tf`) orchestrates the modules in the following order:
+The main Terraform file (`env/main.tf`) orchestrates modules in this order:
 
-1. **VPC Module (`eks-vpc`)** – Creates VPC, subnets, and routing.
-2. **NAT Gateway Module (`eks-nat-gateway`)** – Creates NAT gateway for private subnets.
-3. **Cluster Module (`eks-cluster`)** – Creates the EKS cluster using VPC subnets and IAM roles.
-4. **IAM Module (`eks-iam`)** – Creates IAM roles for EKS cluster and nodes.
-5. **Node Group Template Module (`eks-node-group-template`)** – Configures dynamic EC2 instance templates.
-6. **Node Module (`eks-node-group`)** – Launches worker nodes attached to the cluster.
+1. **VPC Module (`eks-vpc`)** – Creates VPC, public and private subnets, and routing.  
+2. **NAT Gateway Module (`eks-nat-gateway`)** – Creates NAT gateway for private subnets.  
+3. **IAM Module (`eks-iam`)** – Creates IAM roles for EKS cluster and nodes.  
+4. **Cluster Module (`eks-cluster`)** – Creates the EKS cluster using the VPC and IAM roles.  
+5. **Node Group Template Module (`eks-node-group-template`)** – Configures EC2 instance templates for nodes.  
+6. **Node Group Module (`eks-node-group`)** – Launches worker nodes attached to the cluster.  
 
-Each module exposes outputs that are fed as inputs into dependent modules, ensuring proper orchestration.
+Each module exposes outputs that feed into dependent modules, ensuring proper orchestration.
 
 ---
 
@@ -53,7 +53,7 @@ terraform init
 ```bash
 terraform plan -out=tfplan
 ```
-- Optional: Save the plan to a text file:
+- Optional: Save the plan output for review:
 ```bash
 terraform show -no-color tfplan > tf-plan-output.txt
 ```
@@ -69,7 +69,7 @@ terraform apply tfplan
 ```bash
 terraform output
 ```
-- Use `kubectl` to access your cluster once kubeconfig is set up.
+- Use `kubectl` to access your cluster once kubeconfig is configured.
 
 ---
 
@@ -101,20 +101,39 @@ variable "eks_node_group_template_instance_type" {
 
 ## 🧩 Outputs
 
-Terraform produces the following outputs (saved to `eks-output.txt`):
+Terraform produces the following outputs:
 
+### VPC Outputs
+- `eks_vpc_id_out` – EKS VPC ID  
+- `eks_public_subnets_out` – Public subnet IDs for the cluster  
+- `eks_private_subnets_out` – Private subnet IDs for worker nodes  
+
+### NAT Gateway Output
+- `eks_nat_gateway_id_out` – NAT Gateway ID  
+
+### IAM Outputs
+- `eks_cluster_role_arn_out` – IAM Role ARN for the EKS cluster  
+- `eks_node_role_arn_out` – IAM Role ARN for the EKS node group  
+
+### Cluster Outputs
 - `eks_cluster_id_out` – EKS Cluster ID  
 - `eks_cluster_endpoint_out` – Cluster API endpoint  
-- `eks_node_group_ids_out` – Worker node group IDs  
-- `eks_security_group_id_out` – Security group ID  
+- `eks_cluster_oidc_issuer_out` – OIDC Issuer URL  
+- `eks_cluster_oidc_thumbprint_out` – OIDC thumbprint  
+
+### Node Group Outputs
+- `eks_node_group_ids_out` – Node Group IDs  
+- `eks_node_launch_template_id_out` – EC2 Launch Template ID used by node groups  
+
+> All outputs are saved to `eks-output.txt` after `terraform apply`.
 
 ---
 
 ## 🧠 Tips
 
-- Keep `terraform.tfstate` files safe; they contain resource mappings.  
+- Keep `terraform.tfstate` files safe; they contain sensitive resource mappings.  
 - Modular design allows reusing components for multiple environments.  
-- Plan before applying to see changes: `terraform plan`.  
+- Always plan before applying to review changes: `terraform plan`.  
 - Use `users.txt` to manage multiple EKS users if needed.
 
 ---
