@@ -19,8 +19,6 @@ resource "aws_launch_template" "eks_node_launch_template" {
 
     tags = {
       Name        = "eks-node"
-      Environment = "local"
-      Owner       = "vijaydurai"
     }
   }
 
