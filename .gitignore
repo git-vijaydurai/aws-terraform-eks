@@ -1,9 +1,8 @@
-.terraform/*
+.terraform*
+*terraform
+*.txt
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
 crash.log
 env/.terraform*
-*terraform*
-tf*
-*.txt

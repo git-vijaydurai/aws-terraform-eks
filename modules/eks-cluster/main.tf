@@ -17,6 +17,7 @@ data "tls_certificate" "eks_tls_certificate" {
 }
 
 
+<<<<<<< HEAD
 resource "aws_eks_addon" "pod_identity_agent" {
   cluster_name                = aws_eks_cluster.eks.name
   addon_name                  = "eks-pod-identity-agent"
@@ -26,3 +27,5 @@ resource "aws_eks_addon" "pod_identity_agent" {
 =======
 }
 >>>>>>> 4b0363879e89c8fffc1b2486e53a7905a8eb6ac4
+=======
+>>>>>>> parent of 5d32840 (Update README with project structure)
